@@ -1,0 +1,29 @@
+{
+  "version": "sz-dispatch-validator-v0.2",
+  "timestamp": "2026-06-22T07:06:15.024Z",
+  "environment": {
+    "api_ok": false,
+    "storage_ok": false,
+    "api_raw": "FETCH: Invalid response format"
+  },
+  "summary": {
+    "total": 33,
+    "pass": 2,
+    "fail": 5,
+    "skip": 26
+  },
+  "interpretation": {
+    "verified": [
+      "The direct browser request path did not return a usable response in the tested Artifact runtime.",
+      "The validator caught the error and skipped dependent tests.",
+      "Storage was not measured in that runtime."
+    ],
+    "not_verified": [
+      "Host-native Claude invocation",
+      "Concurrency through a host-native bridge",
+      "Persistent storage after Artifact publication",
+      "Token savings or quality gains"
+    ]
+  },
+  "claim_ceiling": "This run blocks only the tested direct browser API path. It does not prove that Claude-powered Artifacts, concurrency, or storage are unavailable."
+}

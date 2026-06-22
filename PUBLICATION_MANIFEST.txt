@@ -1,0 +1,17 @@
+Public release scope: SZ Dispatch Artifact Validator v0.3.0-experimental
+
+Included:
+- provider-neutral React validator;
+- host-native PONG probe;
+- public compatibility entry for private v0.2 lineage;
+- deterministic tests;
+- sanitized blocked-path evidence;
+- installation and Manus publication instructions;
+- MIT License and security/limitations documentation.
+
+Excluded:
+- private sz-dispatch-validator-v0.2.tsx source;
+- direct browser Anthropic API implementation;
+- provider API credentials;
+- private Notion or MCP configuration;
+- node_modules, dist, caches, logs, and local files.
