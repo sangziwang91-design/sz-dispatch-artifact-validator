@@ -6,7 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   tests:
@@ -19,36 +19,9 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Generate candidate dependency remediation
-        run: |
-          npm install --package-lock-only --save-dev vite@^8.3.0 @vitejs/plugin-react@^6.1.1 vitest@^5.0.0
-          npm ci
-      - name: Audit all dependencies
+      - name: Audit dependencies
         run: npm audit --audit-level=high
-      - name: Upload remediated dependency candidate
-        uses: actions/upload-artifact@v4
-        with:
-          name: remediated-dependency-files
-          path: |
-            package.json
-            package-lock.json
       - name: Run deterministic tests
         run: npm test
       - name: Build browser bundle
         run: npm run build
-      - name: Persist validated dependency files to this PR branch
-        if: github.event_name == 'pull_request'
-        run: |
-          cp package.json /tmp/package.json
-          cp package-lock.json /tmp/package-lock.json
-          git fetch origin "${{ github.head_ref }}"
-          git checkout -B "${{ github.head_ref }}" "origin/${{ github.head_ref }}"
-          cp /tmp/package.json package.json
-          cp /tmp/package-lock.json package-lock.json
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add package.json package-lock.json
-          if ! git diff --cached --quiet; then
-            git commit -m "Update validated frontend dependency lock"
-            git push origin "${{ github.head_ref }}"
-          fi
