@@ -39,10 +39,16 @@ jobs:
       - name: Persist validated dependency files to this PR branch
         if: github.event_name == 'pull_request'
         run: |
+          cp package.json /tmp/package.json
+          cp package-lock.json /tmp/package-lock.json
+          git fetch origin "${{ github.head_ref }}"
+          git checkout -B "${{ github.head_ref }}" "origin/${{ github.head_ref }}"
+          cp /tmp/package.json package.json
+          cp /tmp/package-lock.json package-lock.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json
           if ! git diff --cached --quiet; then
             git commit -m "Update validated frontend dependency lock"
-            git push origin HEAD:${{ github.head_ref }}
+            git push origin "${{ github.head_ref }}"
           fi
