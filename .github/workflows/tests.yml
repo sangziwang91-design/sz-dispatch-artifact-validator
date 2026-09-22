@@ -6,7 +6,7 @@ on:
   pull_request:
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   tests:
@@ -36,3 +36,13 @@ jobs:
         run: npm test
       - name: Build browser bundle
         run: npm run build
+      - name: Persist validated dependency files to this PR branch
+        if: github.event_name == 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          if ! git diff --cached --quiet; then
+            git commit -m "Update validated frontend dependency lock"
+            git push origin HEAD:${{ github.head_ref }}
+          fi
