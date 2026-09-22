@@ -19,8 +19,19 @@ jobs:
           cache: npm
       - name: Install dependencies
         run: npm ci
-      - name: Audit production dependencies
-        run: npm audit --omit=dev --audit-level=high
+      - name: Generate candidate dependency remediation
+        run: |
+          npm install --package-lock-only --save-dev vite@^8.3.0 @vitejs/plugin-react@^6.1.1 vitest@^5.0.0
+          npm ci
+      - name: Audit all dependencies
+        run: npm audit --audit-level=high
+      - name: Upload remediated dependency candidate
+        uses: actions/upload-artifact@v4
+        with:
+          name: remediated-dependency-files
+          path: |
+            package.json
+            package-lock.json
       - name: Run deterministic tests
         run: npm test
       - name: Build browser bundle
