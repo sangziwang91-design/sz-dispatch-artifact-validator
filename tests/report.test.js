@@ -3,12 +3,29 @@ import { deriveVerdict, exportReport, phaseRate, redactText, STATUS, summarize }
 
 describe("report utilities", () => {
   it("redacts credentials, email, and local paths", () => {
-    const input = "api_key=secret-value user@example.com C:\\Users\\name\\secret.txt sk-abcdefghijklmnop";
+    const input = [
+      "api_key=secret-value",
+      "password=hunter2-value",
+      "user@example.com",
+      "C:\\Users\\name\\secret.txt",
+      "sk-abcdefghijklmnop",
+      "AIza1234567890abcdefgh",
+      "ghp_1234567890abcdefghijkl",
+      "github_pat_1234567890abcdefghijkl",
+      "xoxb-1234567890-abcdefghijkl",
+      "Bearer abcdefghijklmnopqrstuv",
+    ].join(" ");
     const output = redactText(input);
     expect(output).not.toContain("secret-value");
     expect(output).not.toContain("user@example.com");
     expect(output).not.toContain("C:\\Users");
     expect(output).not.toContain("sk-abcdefghijklmnop");
+    expect(output).not.toContain("hunter2-value");
+    expect(output).not.toContain("AIza1234567890abcdefgh");
+    expect(output).not.toContain("ghp_1234567890abcdefghijkl");
+    expect(output).not.toContain("github_pat_1234567890abcdefghijkl");
+    expect(output).not.toContain("xoxb-1234567890-abcdefghijkl");
+    expect(output).not.toContain("Bearer abcdefghijklmnopqrstuv");
   });
 
   it("summarizes all statuses", () => {

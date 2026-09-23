@@ -7,8 +7,12 @@ export const STATUS = Object.freeze({
 
 const TOKEN_PATTERNS = [
   /\bsk-[A-Za-z0-9_-]{12,}\b/g,
-  /\b(api[_-]?key|token|authorization)\s*[:=]\s*[^\s,;]+/gi,
-  /Bearer\s+[A-Za-z0-9._~+\/-]+=*/gi,
+  /\bAIza[0-9A-Za-z_-]{16,}\b/g,
+  /\bgh[pousr]_[A-Za-z0-9_]{16,}\b/g,
+  /\bgithub_pat_[A-Za-z0-9_]{16,}\b/g,
+  /\bxox[baprs]-[A-Za-z0-9-]{16,}\b/g,
+  /\b(api[_-]?key|token|authorization|password|secret|credentials?)\s*[:=]\s*[^\s,;]+/gi,
+  /Bearer\s+[A-Za-z0-9._~+\/-]{16,}=*/gi,
 ];
 
 const PATH_PATTERNS = [
