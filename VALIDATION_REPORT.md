@@ -1,7 +1,7 @@
 # Validation report
 
-Date: 2026-06-22  
-Environment: sandbox, Node.js 22.16.0, npm 10.9.2
+Date: 2026-09-22  
+Environment: GitHub-hosted Ubuntu, Node.js 24
 
 ## Commands
 
@@ -13,8 +13,9 @@ npm run build
 
 ## Result
 
-- Unit and integration tests: 14/14 PASS at packaging baseline;
-- Vite production build: PASS;
+- Unit and integration tests: **14/14 PASS** on the current dependency lock;
+- `npm audit --audit-level=high`: **0 vulnerabilities**;
+- Vite **8.3.0** production build: **PASS**;
 - direct Anthropic Messages API call in executable source: absent;
 - hard-coded provider model ID in executable source: absent;
 - private v0.2 source: excluded;
@@ -24,7 +25,7 @@ npm run build
 
 The tests cover:
 
-- report redaction;
+- report redaction, including common provider/GitHub/Slack/Bearer/password-secret credential shapes;
 - PASS / FAIL / SKIP / UNKNOWN accounting;
 - verdict derivation;
 - injected model-adapter normalization;
@@ -33,6 +34,18 @@ The tests cover:
 - cleanup of ephemeral storage keys;
 - unavailable-runtime behavior.
 
+## Dependency remediation evidence
+
+The previous lock resolved a Vite 5-era toolchain with six audited findings
+(2 moderate, 4 high). The remediation candidate was generated on CI, then
+validated with a clean install, full dependency audit, all 14 tests, and a
+production build before its `package.json` and `package-lock.json` were promoted
+to the PR branch. The final read-only CI repeated those checks against the
+committed lock and passed.
+
+Current validated dev toolchain: `vite ^8.3.0`,
+`@vitejs/plugin-react ^6.1.1`, `vitest ^5.0.1`.
+
 ## Limit
 
-This report is sandbox evidence only. It does not validate a Claude host-native bridge, published Artifact storage, provider billing, token savings, answer quality, or production reliability.
+This report is repository/CI evidence only. It does not validate a Claude host-native bridge, published Artifact storage, provider billing, token savings, answer quality, or production reliability.
